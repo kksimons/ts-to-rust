@@ -4,7 +4,7 @@ status: backlog
 created: 2025-08-25T04:13:36Z
 progress: 0%
 prd: .claude/prds/cli.md
-github: [Will be updated when synced to GitHub]
+github: https://github.com/kksimons/ts-to-rust/issues/1
 ---
 
 # Epic: CLI - TypeScript-to-Rust API Generator ("Forge")
@@ -196,18 +196,18 @@ High-level task categories that will be created:
 - Smooth installation and setup experience across all platforms
 
 ## Tasks Created
-- [ ] 001.md - CLI Foundation & Project Setup (parallel: true)
-- [ ] 002.md - TypeScript DSL Parser (parallel: true)
-- [ ] 003.md - Rust Code Templates System (parallel: true)
-- [ ] 004.md - Project Scaffolding Generator (parallel: false, depends: 001)
-- [ ] 005.md - Database Integration & Schema Generation (parallel: false, depends: 002,003)
-- [ ] 006.md - Rust Backend Code Generation (parallel: false, depends: 003,005)
-- [ ] 007.md - Middleware & Security Generation (parallel: false, depends: 006)
-- [ ] 008.md - Validation & Error Handling (parallel: false, depends: 002,006)
-- [ ] 009.md - Testing & Quality Assurance (parallel: false, depends: 001,006,007)
-- [ ] 010.md - Documentation & Distribution (parallel: true, depends: 001)
+- [ ] #10 - Database Integration & Schema Generation (parallel: false)
+- [ ] #11 - Rust Backend Code Generation (parallel: false)
+- [ ] #12 - Middleware & Security Generation (parallel: false)
+- [ ] #13 - Validation & Error Handling (parallel: false)
+- [ ] #14 - Testing & Quality Assurance (parallel: false)
+- [ ] #15 - Documentation & Distribution (parallel: true)
+- [ ] #6 - CLI Foundation & Project Setup (parallel: true)
+- [ ] #7 - TypeScript DSL Parser (parallel: true)
+- [ ] #8 - Rust Code Templates System (parallel: true)
+- [ ] #9 - Project Scaffolding Generator (parallel: false)
 
 **Total tasks**: 10
-**Parallel tasks**: 4 (001, 002, 003, 010)
-**Sequential tasks**: 6 (004, 005, 006, 007, 008, 009)
+**Parallel tasks**: 4
+**Sequential tasks**: 6
 **Estimated total effort**: 180-220 hours (6-7 weeks)
