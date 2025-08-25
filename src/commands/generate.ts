@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import { logger } from '../utils/logger';
+import { TypeScriptParser, DSLValidator } from '../parsers';
 
 export const generateCommand = new Command('generate')
   .alias('gen')
@@ -7,6 +8,7 @@ export const generateCommand = new Command('generate')
   .option('-w, --watch', 'watch for changes and regenerate')
   .option('-c, --config <path>', 'path to configuration file', 'forge.config.ts')
   .option('--clean', 'clean output directory before generation')
+  .option('--ignore-errors', 'ignore validation errors and continue generation')
   .option('--verbose', 'enable verbose output')
   .action(async (options: any) => {
     try {
@@ -18,10 +20,42 @@ export const generateCommand = new Command('generate')
       }
       
       logger.step('Parsing TypeScript definitions...');
-      // TODO: Implement TypeScript parsing
+      const parser = new TypeScriptParser();
+      const validator = new DSLValidator();
+      
+      const projectPath = process.cwd();
+      const parsedProject = await parser.parseProject(projectPath);
+      
+      logger.debug(`Parsed ${parsedProject.models.length} models and ${parsedProject.routes.length} routes`);
+      
+      // Log any parse errors
+      if (parsedProject.errors.length > 0) {
+        logger.warn(`Found ${parsedProject.errors.length} parsing errors:`);
+        parsedProject.errors.forEach(error => logger.warn(`  • ${error}`));
+      }
       
       logger.step('Validating schema...');
-      // TODO: Implement schema validation
+      const validationResult = validator.validate(parsedProject);
+      
+      // Log validation results
+      if (validationResult.errors.length > 0) {
+        logger.error(`Validation failed with ${validationResult.errors.length} errors:`);
+        validationResult.errors.forEach(error => logger.error(`  • ${error.message}`));
+        
+        if (!options.ignoreErrors) {
+          logger.error('Use --ignore-errors to bypass validation errors');
+          process.exit(1);
+        }
+      }
+      
+      if (validationResult.warnings.length > 0) {
+        logger.warn(`Found ${validationResult.warnings.length} warnings:`);
+        validationResult.warnings.forEach(warning => logger.warn(`  • ${warning.message}`));
+      }
+      
+      if (validationResult.isValid) {
+        logger.success(`Schema validation passed`);
+      }
       
       logger.step('Generating Rust code...');
       // TODO: Implement Rust code generation
